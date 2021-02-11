@@ -441,17 +441,19 @@ namespace HtmlToOpenXml
 		{
 			AbstractNum absNumMultilevel = mainPart.NumberingDefinitionsPart.Numbering.Elements<AbstractNum>().SingleOrDefault(a => a.AbstractNumberId.Value == absNumId);
 
+			
 			if (absNumMultilevel != null && absNumMultilevel.MultiLevelType.Val == MultiLevelValues.SingleLevel)
 			{
 				Level level1 = absNumMultilevel.GetFirstChild<Level>();
 				absNumMultilevel.MultiLevelType.Val = MultiLevelValues.Multilevel;
-
+				
 				// skip the first level, starts to 2
 				for (int i = 2; i < 10; i++)
 				{
+
 					Level level = new Level {
 						StartNumberingValue = new StartNumberingValue() { Val = 1 },
-						NumberingFormat = new NumberingFormat() { Val = level1.NumberingFormat.Val },
+						NumberingFormat = new NumberingFormat() { Val = getNextDefaultNumberFormatingValue(level1.NumberingFormat.Val, i) },
 						LevelIndex = i - 1
 					};
 
@@ -476,6 +478,26 @@ namespace HtmlToOpenXml
 					absNumMultilevel.Append(level);
 				}
 			}
+		}
+
+		private NumberFormatValues getNextDefaultNumberFormatingValue(NumberFormatValues initNF, int level)
+        {
+			NumberFormatValues[] defaultNumberFormatValues = { NumberFormatValues.Decimal, NumberFormatValues.LowerLetter, NumberFormatValues.LowerRoman };
+            int i;
+			int currentNumberingFormat = 0;
+
+			for (i = 0; i < defaultNumberFormatValues.Length; i++)
+            {
+				if(initNF == defaultNumberFormatValues[i])
+                {
+					currentNumberingFormat = i;
+                    break;
+                }
+            }
+
+			return defaultNumberFormatValues[((currentNumberingFormat + level-1) % defaultNumberFormatValues.Length)];
+
+
 		}
 
 		#endregion
