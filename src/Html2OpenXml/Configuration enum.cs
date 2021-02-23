@@ -46,7 +46,7 @@ namespace HtmlToOpenXml
         /// </summary>
         AutomaticDownload,
         /// <summary>
-        /// The image data will be provided by calling the <see cref="HtmlConverter.ProvisionImage"/> event.
+        /// The image data will be provided by calling the event.
         /// </summary>
         ManualProvisioning
     }

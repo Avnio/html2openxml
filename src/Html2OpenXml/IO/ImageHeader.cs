@@ -29,7 +29,9 @@ namespace HtmlToOpenXml.IO
     {
         // https://en.wikipedia.org/wiki/List_of_file_signatures
 
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
         public enum FileType { Unrecognized, Bitmap, Gif, Png, Jpeg, Emf }
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         private static readonly byte[] pngSignatureBytes = { 0x89, 0x50, 0x4E, 0x47, 0x0D, 0x0A, 0x1A, 0x0A };
 
