@@ -46,8 +46,18 @@ namespace HtmlToOpenXml.IO
         /// <param name="httpClient">The HTTP client to use to download remote resources.</param>
         public DefaultWebRequest(HttpClient httpClient)
         {
-            this.httpClient = httpClient ?? DefaultHttp;
-            this.httpClient.DefaultRequestHeaders.AcceptEncoding.ParseAdd("gzip, deflate");
+            if(httpClient == null)
+            {
+                this.httpClient = DefaultHttp;
+            }
+            else
+            {
+                this.httpClient = httpClient;
+                this.httpClient.DefaultRequestHeaders.AcceptEncoding.ParseAdd("gzip, deflate");
+            }
+            
+            
+            
         }
 
         /// <inheritdoc/>
