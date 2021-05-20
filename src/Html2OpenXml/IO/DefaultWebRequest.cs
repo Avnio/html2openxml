@@ -49,15 +49,12 @@ namespace HtmlToOpenXml.IO
             if(httpClient == null)
             {
                 this.httpClient = DefaultHttp;
+                this.httpClient.DefaultRequestHeaders.AcceptEncoding.ParseAdd("gzip, deflate");
             }
             else
             {
                 this.httpClient = httpClient;
-                this.httpClient.DefaultRequestHeaders.AcceptEncoding.ParseAdd("gzip, deflate");
             }
-            
-            
-            
         }
 
         /// <inheritdoc/>
