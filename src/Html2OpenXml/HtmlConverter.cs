@@ -510,8 +510,17 @@ namespace HtmlToOpenXml
 				preferredSize = ImageHeader.KeepAspectRatio(actualSize, preferredSize);
 			}
 
+			if (preferredSize.Width > 600)
+			{
+				var newWidth = 600;
+				var newHeight = (1 - (double)(preferredSize.Width - newWidth) / preferredSize.Width) * preferredSize.Height; //adjusting Height
+				preferredSize.Width = newWidth;
+				preferredSize.Height = (int) newHeight;
+			}
+
 			long widthInEmus = new Unit(UnitMetric.Pixel, preferredSize.Width).ValueInEmus;
 			long heightInEmus = new Unit(UnitMetric.Pixel, preferredSize.Height).ValueInEmus;
+
 
 			++drawingObjId;
 			++imageObjId;
