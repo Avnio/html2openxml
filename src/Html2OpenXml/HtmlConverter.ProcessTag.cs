@@ -491,20 +491,20 @@ namespace HtmlToOpenXml
 			currentParagraph = htmlStyles.Paragraph.NewParagraph();
 
 			Margin margin = en.StyleAttributes.GetAsMargin("margin");
-			int extraIndent = 0;
-			if (margin.Left.Value > 0 && margin.Left.Type == UnitMetric.Pixel)
+            int extraIndent = 0;
+            if (margin.Left.Value > 0 && margin.Left.Type == UnitMetric.Pixel)
             {
-				extraIndent = Convert.ToInt32(margin.Left.Value / 0.0667);
-			}
-			
+                extraIndent = Convert.ToInt32(margin.Left.Value / 0.0667);
+            }
 
-			int numberingId = htmlStyles.NumberingList.ProcessItem(en);
+
+            int numberingId = htmlStyles.NumberingList.ProcessItem(en);
 			int level = htmlStyles.NumberingList.LevelIndex;
 
 			// Save the new paragraph reference to support nested numbering list.
 			Paragraph p = currentParagraph;
 			int leftValue = extraIndent;
-			if(level >= 1)
+			if(level >= 0)
             {
 				leftValue += (level * 780);
             } 
