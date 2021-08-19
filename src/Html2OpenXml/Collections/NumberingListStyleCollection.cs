@@ -404,41 +404,41 @@ namespace HtmlToOpenXml
 
             // in case a margin has been specifically specified, we need to create a new list template
             // on the fly with a different AbsNumId, in order to let Word doesn't merge the style with its predecessor.
-            Margin margin = en.StyleAttributes.GetAsMargin("margin");
-            if (margin.Left.Value > 0 && margin.Left.Type == UnitMetric.Pixel)
-            {
-                Numbering numbering = mainPart.NumberingDefinitionsPart.Numbering;
-                foreach (AbstractNum absNum in numbering.Elements<AbstractNum>())
-                {
-                    if (absNum.AbstractNumberId == numInstances.Peek().Value)
-                    {
-                        Level lvl = absNum.GetFirstChild<Level>();
-                        Int32 currentNumId = ++nextInstanceID;
+            //Margin margin = en.StyleAttributes.GetAsMargin("margin");
+            //if (margin.Left.Value > 0 && margin.Left.Type == UnitMetric.Pixel)
+            //{
+            //    Numbering numbering = mainPart.NumberingDefinitionsPart.Numbering;
+            //    foreach (AbstractNum absNum in numbering.Elements<AbstractNum>())
+            //    {
+            //        if (absNum.AbstractNumberId == numInstances.Peek().Value)
+            //        {
+            //            Level lvl = absNum.GetFirstChild<Level>();
+            //            Int32 currentNumId = ++nextInstanceID;
 
-                        numbering.Append(
-                            new AbstractNum(
-                                    new MultiLevelType() { Val = MultiLevelValues.SingleLevel },
-                                    new Level
-                                    {
-                                        StartNumberingValue = new StartNumberingValue() { Val = 1 },
-                                        NumberingFormat = new NumberingFormat() { Val = lvl.NumberingFormat.Val },
-                                        LevelIndex = 0,
-                                        LevelText = new LevelText() { Val = lvl.LevelText.Val }
-                                    }
-                                )
-                            { AbstractNumberId = currentNumId });
-                        numbering.Save(mainPart.NumberingDefinitionsPart);
-                        numbering.Append(
-                            new NumberingInstance(
-                                    new AbstractNumId() { Val = currentNumId }
-                                )
-                            { NumberID = currentNumId });
-                        numbering.Save(mainPart.NumberingDefinitionsPart);
-                        mainPart.NumberingDefinitionsPart.Numbering.Reload();
-                        break;
-                    }
-                }
-            }
+            //            numbering.Append(
+            //                new AbstractNum(
+            //                        new MultiLevelType() { Val = MultiLevelValues.SingleLevel },
+            //                        new Level
+            //                        {
+            //                            StartNumberingValue = new StartNumberingValue() { Val = 1 },
+            //                            NumberingFormat = new NumberingFormat() { Val = lvl.NumberingFormat.Val },
+            //                            LevelIndex = 0,
+            //                            LevelText = new LevelText() { Val = lvl.LevelText.Val }
+            //                        }
+            //                    )
+            //                { AbstractNumberId = currentNumId });
+            //            numbering.Save(mainPart.NumberingDefinitionsPart);
+            //            numbering.Append(
+            //                new NumberingInstance(
+            //                        new AbstractNumId() { Val = currentNumId }
+            //                    )
+            //                { NumberID = currentNumId });
+            //            numbering.Save(mainPart.NumberingDefinitionsPart);
+            //            mainPart.NumberingDefinitionsPart.Numbering.Reload();
+            //            break;
+            //        }
+            //    }
+            //}
 
             return this.InstanceID;
         }

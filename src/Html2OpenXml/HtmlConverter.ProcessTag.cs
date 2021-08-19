@@ -490,6 +490,14 @@ namespace HtmlToOpenXml
 			CompleteCurrentParagraph(false);
 			currentParagraph = htmlStyles.Paragraph.NewParagraph();
 
+			Margin margin = en.StyleAttributes.GetAsMargin("margin");
+			int extraIndent = 0;
+			if (margin.Left.Value > 0 && margin.Left.Type == UnitMetric.Pixel)
+            {
+				extraIndent = Convert.ToInt32(margin.Left.Value / 0.0667);
+			}
+			
+
 			int numberingId = htmlStyles.NumberingList.ProcessItem(en);
 			int level = htmlStyles.NumberingList.LevelIndex;
 
@@ -497,7 +505,7 @@ namespace HtmlToOpenXml
 			Paragraph p = currentParagraph;
 			currentParagraph.InsertInProperties(prop => {
 				prop.ParagraphStyleId = new ParagraphStyleId() { Val = htmlStyles.GetStyle(htmlStyles.DefaultStyles.ListParagraphStyle, StyleValues.Paragraph) };
-				prop.Indentation = level < 2? null : new Indentation() { Left = (level * 780).ToString(CultureInfo.InvariantCulture) };
+				prop.Indentation = new Indentation() { Left = (extraIndent+(level * 780)).ToString(CultureInfo.InvariantCulture) };
 				prop.NumberingProperties = new NumberingProperties {
 					NumberingLevelReference = new NumberingLevelReference() { Val = level - 1 },
 					NumberingId = new NumberingId() { Val = numberingId }
