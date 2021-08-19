@@ -503,9 +503,14 @@ namespace HtmlToOpenXml
 
 			// Save the new paragraph reference to support nested numbering list.
 			Paragraph p = currentParagraph;
+			int leftValue = extraIndent;
+			if(level >= 1)
+            {
+				leftValue += (level * 780);
+            } 
 			currentParagraph.InsertInProperties(prop => {
 				prop.ParagraphStyleId = new ParagraphStyleId() { Val = htmlStyles.GetStyle(htmlStyles.DefaultStyles.ListParagraphStyle, StyleValues.Paragraph) };
-				prop.Indentation = new Indentation() { Left = (extraIndent+(level * 780)).ToString(CultureInfo.InvariantCulture) };
+				prop.Indentation = new Indentation() { Left = leftValue.ToString(CultureInfo.InvariantCulture) };
 				prop.NumberingProperties = new NumberingProperties {
 					NumberingLevelReference = new NumberingLevelReference() { Val = level - 1 },
 					NumberingId = new NumberingId() { Val = numberingId }
