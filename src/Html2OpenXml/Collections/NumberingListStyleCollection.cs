@@ -264,7 +264,7 @@ namespace HtmlToOpenXml
             if (levelDepth > 0 && popInstances)
                 numInstances.Pop();  // decrement for nested list
 
-            levelDepth = 0;
+            levelDepth--;
             firstItem = true;
         }
 
