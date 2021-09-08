@@ -492,9 +492,11 @@ namespace HtmlToOpenXml
 
 			Margin margin = en.StyleAttributes.GetAsMargin("margin");
             int extraIndent = 0;
+			bool context = false;
             if (margin.Left.Value > 0 && margin.Left.Type == UnitMetric.Pixel)
             {
                 extraIndent = Convert.ToInt32(margin.Left.Value / 0.0667);
+				context = true;
             }
 
 
@@ -504,17 +506,22 @@ namespace HtmlToOpenXml
 			// Save the new paragraph reference to support nested numbering list.
 			Paragraph p = currentParagraph;
 			int leftValue = extraIndent;
-			if(level >= 0)
+            if (level > 0)
             {
-				leftValue += (level * 780);
-            } 
-			currentParagraph.InsertInProperties(prop => {
+                leftValue += (level * 720);
+            }
+            currentParagraph.InsertInProperties(prop => {
 				prop.ParagraphStyleId = new ParagraphStyleId() { Val = htmlStyles.GetStyle(htmlStyles.DefaultStyles.ListParagraphStyle, StyleValues.Paragraph) };
 				prop.Indentation = new Indentation() { Left = leftValue.ToString(CultureInfo.InvariantCulture) };
 				prop.NumberingProperties = new NumberingProperties {
 					NumberingLevelReference = new NumberingLevelReference() { Val = level - 1 },
 					NumberingId = new NumberingId() { Val = numberingId }
 				};
+                if (context)
+                {
+					prop.ContextualSpacing = new ContextualSpacing();
+				}
+				
 			});
 
 			// Restore the original elements list

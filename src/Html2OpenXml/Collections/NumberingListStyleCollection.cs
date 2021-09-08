@@ -264,7 +264,7 @@ namespace HtmlToOpenXml
             if (levelDepth > 0 && popInstances)
                 numInstances.Pop();  // decrement for nested list
 
-            levelDepth--;
+            levelDepth = 0;
             firstItem = true;
         }
 
@@ -352,9 +352,6 @@ namespace HtmlToOpenXml
                     currentInstanceId = ++nextInstanceID;
                     Numbering numbering = mainPart.NumberingDefinitionsPart.Numbering;
 
-
-
-
                     numbering.Append(
                         new NumberingInstance(
                             new AbstractNumId() { Val = absNumId },
@@ -402,16 +399,18 @@ namespace HtmlToOpenXml
 
             firstItem = false;
 
-            // in case a margin has been specifically specified, we need to create a new list template
-            // on the fly with a different AbsNumId, in order to let Word doesn't merge the style with its predecessor.
+            //in case a margin has been specifically specified, we need to create a new list template
+            //on the fly with a different AbsNumId, in order to let Word doesn't merge the style with its predecessor.
             //Margin margin = en.StyleAttributes.GetAsMargin("margin");
             //if (margin.Left.Value > 0 && margin.Left.Type == UnitMetric.Pixel)
             //{
             //    Numbering numbering = mainPart.NumberingDefinitionsPart.Numbering;
             //    foreach (AbstractNum absNum in numbering.Elements<AbstractNum>())
             //    {
+                    
             //        if (absNum.AbstractNumberId == numInstances.Peek().Value)
             //        {
+            //            var nextAbsNumId = ++absNum.AbstractNumberId;
             //            Level lvl = absNum.GetFirstChild<Level>();
             //            Int32 currentNumId = ++nextInstanceID;
 
@@ -426,11 +425,11 @@ namespace HtmlToOpenXml
             //                            LevelText = new LevelText() { Val = lvl.LevelText.Val }
             //                        }
             //                    )
-            //                { AbstractNumberId = currentNumId });
+            //                { AbstractNumberId = nextAbsNumId });
             //            numbering.Save(mainPart.NumberingDefinitionsPart);
             //            numbering.Append(
             //                new NumberingInstance(
-            //                        new AbstractNumId() { Val = currentNumId }
+            //                        new AbstractNumId() { Val = nextAbsNumId }
             //                    )
             //                { NumberID = currentNumId });
             //            numbering.Save(mainPart.NumberingDefinitionsPart);
