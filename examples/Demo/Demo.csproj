@@ -19,4 +19,8 @@
     <EmbeddedResource Include="Resources\*" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Remove="Resources\new 24.html" />
+  </ItemGroup>
+
 </Project>

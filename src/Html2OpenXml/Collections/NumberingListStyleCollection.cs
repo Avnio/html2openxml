@@ -1,4 +1,4 @@
-﻿/* Copyright (C) Olivier Nizet https://github.com/onizet/html2openxml - All Rights Reserved
+/* Copyright (C) Olivier Nizet https://github.com/onizet/html2openxml - All Rights Reserved
  * 
  * This source is subject to the Microsoft Permissive License.
  * Please see the License.txt file for more information.
@@ -261,10 +261,11 @@ namespace HtmlToOpenXml
 
         public void EndList(bool popInstances = true)
         {
+            levelDepth--;
+
             if (levelDepth > 0 && popInstances)
                 numInstances.Pop();  // decrement for nested list
 
-            levelDepth--;
             firstItem = true;
         }
 
@@ -332,15 +333,19 @@ namespace HtmlToOpenXml
                 maxlevelDepth = levelDepth;
             }
 
+            Console.WriteLine("absNumId:" + absNumId);
+
             // save a NumberingInstance if the nested list style is the same as its ancestor.
             // this allows us to nest <ol> and restart the indentation to 1.
             int currentInstanceId = this.InstanceID;
             if (levelDepth > 1 && absNumId == prevAbsNumId && orderedList)
             {
+                Console.WriteLine("OL PrevAbsNumId:" + prevAbsNumId);
                 EnsureMultilevel(absNumId);
             }
             else if (levelDepth > 1 && absNumId == prevAbsNumId && !orderedList)
             {
+                Console.WriteLine("UL PrevAbsNumId:" + prevAbsNumId);
                 EnsureMultilevelUL(absNumId);
             }
             else
@@ -349,7 +354,10 @@ namespace HtmlToOpenXml
                 // (MS Word does not tolerate hundreds of identical NumberingInstances)
                 if (orderedList || (levelDepth >= maxlevelDepth))
                 {
+                    Console.WriteLine("Inside LVL >= PPT");
+
                     currentInstanceId = ++nextInstanceID;
+                    Console.WriteLine("CurrentNum:" + currentInstanceId);
                     Numbering numbering = mainPart.NumberingDefinitionsPart.Numbering;
 
                     numbering.Append(
@@ -364,7 +372,8 @@ namespace HtmlToOpenXml
 
                 }
             }
-
+            Console.WriteLine("New Pushed: Num: " + currentInstanceId + ", abs : "+ absNumId);
+            
             numInstances.Push(new KeyValuePair<int, int>(currentInstanceId, absNumId));
 
             return currentInstanceId;

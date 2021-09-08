@@ -14,7 +14,7 @@ namespace Demo
         static void Main(string[] args)
         {
             const string filename = "test.docx";
-            string html = ResourceHelper.GetString("Resources.CompleteRunTest.html");
+            string html = ResourceHelper.GetString("Resources.NumberingList.htm");
             if (File.Exists(filename)) File.Delete(filename);
 
             using (MemoryStream generatedDocument = new MemoryStream())
@@ -48,7 +48,7 @@ namespace Demo
 
                 File.WriteAllBytes(filename, generatedDocument.ToArray());
             }
-
+            Console.ReadLine();
             System.Diagnostics.Process.Start(filename);
         }
 
