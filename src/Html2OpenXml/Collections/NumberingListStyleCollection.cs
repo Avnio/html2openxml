@@ -252,7 +252,17 @@ namespace HtmlToOpenXml
             String type = en.StyleAttributes["list-style-type"];
             bool orderedList = en.CurrentTag.Equals("<ol>", StringComparison.OrdinalIgnoreCase);
 
-            CreateList(type, orderedList);
+            var startingNumberString = en.Attributes["start"];
+
+            if (orderedList && !String.IsNullOrEmpty(startingNumberString))
+            {
+                int startNumber = int.Parse(startingNumberString);
+                CreateList(type, orderedList, startNumber);
+            }
+            else
+            {
+                CreateList(type, orderedList);
+            }
         }
 
         #endregion
@@ -321,7 +331,7 @@ namespace HtmlToOpenXml
 
         #region CreateList
 
-        public int CreateList(String type, bool orderedList)
+        public int CreateList(String type, bool orderedList, int startingNumber = -1)
         {
             int absNumId = GetAbsNumIdFromType(type, orderedList);
             int prevAbsNumId = numInstances.Peek().Value;
@@ -364,7 +374,7 @@ namespace HtmlToOpenXml
                         new NumberingInstance(
                             new AbstractNumId() { Val = absNumId },
                             new LevelOverride(
-                                new StartOverrideNumberingValue() { Val = 1 }
+                                new StartOverrideNumberingValue() { Val = startingNumber == -1 ? 1 : startingNumber }
                             )
                             { LevelIndex = 0 }
                         )
@@ -372,8 +382,8 @@ namespace HtmlToOpenXml
 
                 }
             }
-            Console.WriteLine("New Pushed: Num: " + currentInstanceId + ", abs : "+ absNumId);
-            
+            Console.WriteLine("New Pushed: Num: " + currentInstanceId + ", abs : " + absNumId);
+
             numInstances.Push(new KeyValuePair<int, int>(currentInstanceId, absNumId));
 
             return currentInstanceId;
