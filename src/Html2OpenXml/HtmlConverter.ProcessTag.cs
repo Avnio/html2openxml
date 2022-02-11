@@ -303,7 +303,7 @@ namespace HtmlToOpenXml
             if (!String.IsNullOrWhiteSpace(firstElement.InnerText))
             {
                 AddParagraph(p);
-                
+
             }
             AddParagraph(currentParagraph = htmlStyles.Paragraph.NewParagraph());
         }
@@ -823,7 +823,7 @@ namespace HtmlToOpenXml
             TableProperties properties = new TableProperties(
                 new TableStyle() { Val = htmlStyles.GetStyle(htmlStyles.DefaultStyles.TableStyle, StyleValues.Table) }
             );
-            Table currentTable = new Table(properties);
+            Table currentTable = new Table(properties); 
 
             string classValue = en.Attributes["class"];
             if (classValue != null)
@@ -1005,7 +1005,7 @@ namespace HtmlToOpenXml
                 CompleteCurrentParagraph();
                 this.paragraphs.Add(currentTable);
             }
-
+            
             tables.NewContext(currentTable);
         }
 
@@ -1090,7 +1090,7 @@ namespace HtmlToOpenXml
                     break;
             }
 
-            properties.AddChild(new TableCellSpacing() { Type = TableWidthUnitValues.Dxa, Width = "0" });
+            //properties.AddChild(new TableCellSpacing() { Type = TableWidthUnitValues.Dxa, Width = "0" });
 
             TableRow row = new TableRow();
             row.TableRowProperties = properties;

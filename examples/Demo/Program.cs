@@ -14,14 +14,14 @@ namespace Demo
         static void Main(string[] args)
         {
             const string filename = "test.docx";
-            string html = ResourceHelper.GetString("Resources.NumberingList.htm");
+            string html = ResourceHelper.GetString("Resources.AdvancedTable.html");
             if (File.Exists(filename)) File.Delete(filename);
 
             using (MemoryStream generatedDocument = new MemoryStream())
             {
                 // Uncomment and comment the second using() to open an existing template document
                 // instead of creating it from scratch.
-                using (var buffer = ResourceHelper.GetStream("Resources.template.docx"))
+                using (var buffer = ResourceHelper.GetStream("Resources.template3.docx"))
                 {
                     buffer.CopyTo(generatedDocument);
                 }
@@ -43,12 +43,12 @@ namespace Demo
                     converter.ParseHtml(html);
                     mainPart.Document.Save();
 
-                    AssertThatOpenXmlDocumentIsValid(package);
+                    //AssertThatOpenXmlDocumentIsValid(package);
                 }
 
                 File.WriteAllBytes(filename, generatedDocument.ToArray());
             }
-            Console.ReadLine();
+            //Console.ReadLine();
             System.Diagnostics.Process.Start(filename);
         }
 
