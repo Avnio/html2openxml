@@ -73,7 +73,7 @@ namespace HtmlToOpenXml
 		/// </summary>
 		private static void Initialize()
 		{
-#if NETSTANDARD1_3 || NETSTANDARD2_0
+#if NETSTANDARD1_3 || NETSTANDARD2_0 || NETCORE3_1
             traceSource = new TraceSource(TraceSourceName);
 			enabled = traceSource.Switch.Level != SourceLevels.Off;
 #else
