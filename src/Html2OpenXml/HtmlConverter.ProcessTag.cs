@@ -823,7 +823,7 @@ namespace HtmlToOpenXml
             TableProperties properties = new TableProperties(
                 new TableStyle() { Val = htmlStyles.GetStyle(htmlStyles.DefaultStyles.TableStyle, StyleValues.Table) }
             );
-            Table currentTable = new Table(properties); 
+            Table currentTable = new Table(properties);
 
             string classValue = en.Attributes["class"];
             if (classValue != null)
@@ -834,6 +834,10 @@ namespace HtmlToOpenXml
             }
 
             int? border = en.Attributes.GetAsInt("border");
+            
+            if (border == null)
+                border = 0;
+
             if (border.HasValue && border.Value > 0)
             {
                 bool handleBorders = true;
@@ -861,6 +865,20 @@ namespace HtmlToOpenXml
                         BottomBorder = new BottomBorder { Val = BorderValues.None },
                         InsideHorizontalBorder = new InsideHorizontalBorder { Val = BorderValues.Single, Size = borderSize },
                         InsideVerticalBorder = new InsideVerticalBorder { Val = BorderValues.Single, Size = borderSize }
+                    };
+                    handleBorders = false;
+                }
+
+                if (handleBorders && properties.TableStyle.Val == htmlStyles.DefaultStyles.TableStyle && border.Value > 1)
+                {
+                    uint borderSize = (uint)new Unit(UnitMetric.Point, border.Value).ValueInDxa;
+                    borderSize = (uint) (borderSize/ 2);
+                    properties.TableBorders = new TableBorders()
+                    {
+                        TopBorder = new TopBorder { Val = BorderValues.Single, Size = borderSize },
+                        LeftBorder = new LeftBorder { Val = BorderValues.Single, Size = borderSize },
+                        RightBorder = new RightBorder { Val = BorderValues.Single, Size = borderSize },
+                        BottomBorder = new BottomBorder { Val = BorderValues.Single, Size = borderSize }
                     };
                 }
             }
@@ -1005,7 +1023,7 @@ namespace HtmlToOpenXml
                 CompleteCurrentParagraph();
                 this.paragraphs.Add(currentTable);
             }
-            
+
             tables.NewContext(currentTable);
         }
 
