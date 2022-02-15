@@ -872,7 +872,7 @@ namespace HtmlToOpenXml
                 if (handleBorders && properties.TableStyle.Val == htmlStyles.DefaultStyles.TableStyle && border.Value > 1)
                 {
                     uint borderSize = (uint)new Unit(UnitMetric.Point, border.Value).ValueInDxa;
-                    borderSize = (uint) (borderSize/ 2);
+                    borderSize = (uint) (borderSize/ 3);
                     properties.TableBorders = new TableBorders()
                     {
                         TopBorder = new TopBorder { Val = BorderValues.Single, Size = borderSize },
