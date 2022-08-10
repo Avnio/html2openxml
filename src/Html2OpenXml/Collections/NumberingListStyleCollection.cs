@@ -567,7 +567,7 @@ namespace HtmlToOpenXml
             };
 
 
-            int i;
+            //int i;
             int currentNumberingFormat = 0;
 
             //for (i = 0; i < levels.Length; i++)

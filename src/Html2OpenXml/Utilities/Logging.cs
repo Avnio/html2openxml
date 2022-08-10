@@ -73,28 +73,7 @@ namespace HtmlToOpenXml
 		/// </summary>
 		private static void Initialize()
 		{
-#if NETSTANDARD1_3 || NETSTANDARD2_0 || NETCORE3_1
-            traceSource = new TraceSource(TraceSourceName);
-			enabled = traceSource.Switch.Level != SourceLevels.Off;
-#else
-            try
-			{
-				traceSource = new TraceSource(TraceSourceName);
-				enabled = traceSource.Switch.Level != SourceLevels.Off;
-			}
-            catch (System.Configuration.ConfigurationException)
-            {
-                // app.config has an error
-                enabled = false;
-			}
 
-            if (enabled)
-			{
-				AppDomain appDomain = AppDomain.CurrentDomain;
-				appDomain.DomainUnload += OnDomainUnload;
-				appDomain.ProcessExit += OnDomainUnload;
-			}
-#endif
         }
 
         #endregion
